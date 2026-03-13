@@ -16,21 +16,21 @@ public record FindCartItemsResponse(
         cartItems.stream().map(cartItem -> {
           return FindCartItemResponse.builder()
               .cartItemId(cartItem.getId())
-              .optionName(cartItem.getProductOption().getOptionName())
+              .optionName(cartItem.getProductOption().getName())
               .count(cartItem.getCount())
               .updatedAt(cartItem.getUpdatedAt())
               .createdAt(cartItem.getCreatedAt())
               .productOptionId(cartItem.getProductOption().getId())
               .cartId(cartItem.getCart().getId()).build();
         }).toList(),
-        null
+        null // 수정 예정
     );
   }
   @Builder
   public record FindCartItemResponse(
       Long cartItemId,
       String optionName,
-      int count,
+      Integer count,
       LocalDateTime updatedAt,
       LocalDateTime createdAt,
       Long productOptionId,
