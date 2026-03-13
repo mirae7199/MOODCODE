@@ -1,6 +1,6 @@
 package com.devcrew.moodcode.domain.wishlist;
 
-import com.devcrew.moodcode.domain.cart.User;
+import com.devcrew.moodcode.domain.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
