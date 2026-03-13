@@ -2,13 +2,15 @@ package com.devcrew.moodcode.domain.cart.service;
 
 import com.devcrew.moodcode.domain.cart.Cart;
 import com.devcrew.moodcode.domain.cart.CartItem;
-import com.devcrew.moodcode.domain.cart.ProductOption;
 import com.devcrew.moodcode.domain.cart.service.command.AddCartItemCommand;
 import com.devcrew.moodcode.domain.cart.service.command.UpdateCartItemCommand;
 import com.devcrew.moodcode.domain.cart.repository.CartItemRepository;
 import com.devcrew.moodcode.domain.cart.repository.CartRepository;
-import com.devcrew.moodcode.domain.cart.repository.ProductOptionRepository;
 import com.devcrew.moodcode.domain.cart.dto.FindCartItemsResponse;
+import com.devcrew.moodcode.domain.product.ProductOption;
+import com.devcrew.moodcode.domain.product.repository.ProductOptionRepository;
+import com.devcrew.moodcode.domain.user.User;
+import com.devcrew.moodcode.domain.user.repository.UserRepository;
 import com.devcrew.moodcode.global.error.ErrorCode;
 import com.devcrew.moodcode.global.error.exception.BusinessException;
 import java.util.List;
@@ -21,16 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 public class CartService {
 
   private final CartRepository cartRepository;
+  private final UserRepository userRepository;
   private final CartItemRepository cartItemRepository;
   private final ProductOptionRepository productOptionRepository;
 
-  // 장바구니 추가 기능
+  // 장바구니 상품 추가 기능
   @Transactional
   public void addCartItem(Long userId, AddCartItemCommand command) {
-    Cart cart = findCartByUserId(userId);
-    List<CartItem> cartItems = cart.getCartItems();
+    Cart cart = findCartByUserId(userId); // 장바구니
+    List<CartItem> cartItems = cart.getCartItems(); // 장바구니에 담을 상품 배열들
 
-    ProductOption productOption = findProductOption(command.productOptionId());
+    ProductOption productOption = findProductOption(command.productOptionId()); // 장바구니에 담을 상품 옵션
 
     if (increaseCountIfDuplicate(cart.getId(), command.productOptionId(), command.count())) {
       return;
@@ -53,7 +56,7 @@ public class CartService {
   public void updateCartItem(Long userId, Long cartItemId, UpdateCartItemCommand command) {
     CartItem cartItem = findCartItemById(cartItemId);
 
-    Long productId = cartItem.getProductOption().getProductId();
+    Long productId = cartItem.getProductOption().getProduct().getId();
     String optionName = command.optionName();
 
     ProductOption productOption = findByProductIdAndOptionName(productId, optionName);
@@ -78,14 +81,17 @@ public class CartService {
 //  }
 
   private Cart findCartByUserId(Long userId) {
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
+
     Cart cart = cartRepository.findByUserId(userId)
-        .orElseThrow(() -> new BusinessException(ErrorCode.CART_NOT_FOUND));
+        .orElseGet(() -> cartRepository.save(Cart.of(user)));
 
     return cart;
   }
 
   private ProductOption findByProductIdAndOptionName(Long productId, String optionName) {
-    return productOptionRepository.findByProductIdAndOptionName(productId, optionName)
+    return productOptionRepository.findByProductIdAndName(productId, optionName)
         .orElseThrow(() -> new BusinessException(ErrorCode.INVALID_PRODUCT_OPTION));
   }
 
@@ -104,8 +110,8 @@ public class CartService {
         .orElseThrow(() -> new BusinessException(ErrorCode.CART_ITEM_NOT_FOUND));
   }
 
-  private List<ProductOption> findAllByProductId(Long productId) {
-    return productOptionRepository.findAllByProductId(productId);
+  private List<ProductOption> findByProductId(Long productId) {
+    return productOptionRepository.findByProductId(productId);
   }
 
   private boolean increaseCountIfDuplicate(Long cartId, Long productOptionId, int count) {
