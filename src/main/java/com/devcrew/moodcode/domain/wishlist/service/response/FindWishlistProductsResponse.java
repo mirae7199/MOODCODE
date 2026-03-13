@@ -1,6 +1,6 @@
 package com.devcrew.moodcode.domain.wishlist.service.response;
 
-import com.devcrew.moodcode.domain.wishlist.Product;
+import com.devcrew.moodcode.domain.product.Product;
 import java.util.List;
 import lombok.Builder;
 
@@ -28,5 +28,5 @@ public record FindWishlistProductsResponse(
   }
 
   @Builder
-  record FindWishlistProductResponse(Long productId, String brandName, String productName, int originalPrice, int productLikeCount) {}
+  record FindWishlistProductResponse(Long productId, String brandName, String productName, Integer originalPrice, Integer productLikeCount) {}
 }
