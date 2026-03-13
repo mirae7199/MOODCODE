@@ -26,13 +26,16 @@ public class Product {
     private Category category; // TOP, OUTER ...
 
     @Column(name = "original_price", nullable = false)
-    private Long originalPrice;
+    private Integer originalPrice;
 
     @Column(name = "thumbnail_image_url")
     private String thumbnailImageUrl;
 
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
+
+    @Column(name = "like_count", nullable = false)
+    private Integer likeCount;
 
     @OneToMany(mappedBy = "product",
             cascade = CascadeType.ALL,
