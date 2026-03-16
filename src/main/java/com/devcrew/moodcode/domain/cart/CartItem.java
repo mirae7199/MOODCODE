@@ -1,5 +1,6 @@
 package com.devcrew.moodcode.domain.cart;
 
+import com.devcrew.moodcode.domain.product.ProductOption;
 import com.devcrew.moodcode.global.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,7 +37,7 @@ public class CartItem extends BaseTimeEntity {
   private Long id;
 
   @Column(nullable = false)
-  private int count;
+  private Integer count;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "cart_id")
@@ -46,16 +47,16 @@ public class CartItem extends BaseTimeEntity {
   @JoinColumn(name = "product_option_id")
   private ProductOption productOption;
 
-  public void addCount(int count) {
+  public void addCount(Integer count) {
     this.count += count;
   }
 
-  public void updateOption(ProductOption productOption, int count) {
+  public void updateOption(ProductOption productOption, Integer count) {
     this.productOption = productOption;
     this.count = count;
   }
 
-  public static CartItem of(ProductOption productOption, int count, Cart cart) {
+  public static CartItem of(ProductOption productOption, Integer count, Cart cart) {
     return CartItem.builder()
         .productOption(productOption)
         .count(count)

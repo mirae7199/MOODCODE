@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/carts")
-public class CartController {
+@RequestMapping("/api/v1/carts") // 웹 페이지 url
+public class CartController { // controller -> service -> repository -> entity
   private final CartService cartService;
 
   @PostMapping("/items")
@@ -40,7 +40,7 @@ public class CartController {
     return ResponseEntity.ok(cartService.getCartItems(userId));
   }
 
-  @PatchMapping("/items/{cartItemId}")
+  @PatchMapping("/items/{cartItemId}") // /api/v1/cart/items/3
   public ResponseEntity<Void> updateCartItem(
       @LoginUser Long userId,
       @PathVariable Long cartItemId,
