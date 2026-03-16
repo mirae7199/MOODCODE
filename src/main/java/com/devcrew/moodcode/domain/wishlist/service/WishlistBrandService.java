@@ -1,9 +1,9 @@
 package com.devcrew.moodcode.domain.wishlist.service;
 
-import com.devcrew.moodcode.domain.wishlist.Brand;
+import com.devcrew.moodcode.domain.brand.Brand;
 import com.devcrew.moodcode.domain.wishlist.Wishlist;
 import com.devcrew.moodcode.domain.wishlist.WishlistBrand;
-import com.devcrew.moodcode.domain.wishlist.repository.BrandRepository;
+import com.devcrew.moodcode.domain.brand.repository.BrandRepository;
 import com.devcrew.moodcode.domain.wishlist.repository.WishlistBrandRepository;
 import com.devcrew.moodcode.domain.wishlist.repository.WishlistRepository;
 import com.devcrew.moodcode.domain.wishlist.service.response.FindWishlistBrandsResponse;
