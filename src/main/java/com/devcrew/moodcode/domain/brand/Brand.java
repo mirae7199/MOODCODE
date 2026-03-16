@@ -1,6 +1,6 @@
 package com.devcrew.moodcode.domain.brand;
 
-import com.devcrew.moodcode.domain.wishlist.Product;
+import com.devcrew.moodcode.domain.product.Product;
 import com.devcrew.moodcode.domain.wishlist.WishlistBrand;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,7 +31,7 @@ public class Brand {
   @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<WishlistBrand> wishlistBrands = new ArrayList<>();
 
-  @OneToOne(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
-  private Product product;
+  @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Product> products = new ArrayList<>();
 
 }

@@ -1,6 +1,6 @@
 package com.devcrew.moodcode.domain.wishlist.service.response;
 
-import com.devcrew.moodcode.domain.wishlist.Brand;
+import com.devcrew.moodcode.domain.brand.Brand;
 import java.util.List;
 import lombok.Builder;
 
